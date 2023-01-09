@@ -1,22 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/tasks", (req, res) => {
-  res.status(200).send({ tasks: [] });
-});
+const {
+  getTasks,
+  getSingleTask,
+  addTask,
+  updateTask,
+  removeTask,
+} = require("../controllers/tasks");
 
-router.get("/tasks/:id", (req, res) => {
-  res.status(200).send({ task: "single task" });
-});
+router.get("/tasks", getTasks);
 
-router.post("/tasks", (req, res) => {
-  res.status(200).send({ msg: "task added successfully" });
-});
+router.get("/tasks/:id", getSingleTask);
 
-router.put("/tasks/:id", (req, res) => {
-  res.status(200).send({ msg: "task updated successfully" });
-});
+router.post("/tasks", addTask);
 
-router.delete("/tasks/:id", (req, res) => {
-  res.status(200).send({ msg: "task deleted successfully" });
-});
+router.put("/tasks/:id", updateTask);
+
+router.delete("/tasks/:id", removeTask);
