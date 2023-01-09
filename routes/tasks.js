@@ -9,12 +9,14 @@ const {
   removeTask,
 } = require("../controllers/tasks");
 
-router.get("/tasks", getTasks);
+router.get("/", getTasks);
 
-router.get("/tasks/:id", getSingleTask);
+router.get("/:id", getSingleTask);
 
-router.post("/tasks", addTask);
+router.post("/", addTask);
 
-router.put("/tasks/:id", updateTask);
+router.put("/:id", updateTask);
 
-router.delete("/tasks/:id", removeTask);
+router.delete("/:id", removeTask);
+
+module.exports = router;
