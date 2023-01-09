@@ -13,12 +13,12 @@ const getTasks = async (req, res) => {
 
 const getSingleTask = async (req, res) => {
   try {
-    const { id: userID } = req.params;
-    const task = await Task.find({ _id: userID });
+    const { id: taskID } = req.params;
+    const task = await Task.find({ _id: taskID });
 
     if (task) return res.status(200).json(task);
 
-    res.status(404).json({ msg: `no user with id ${userID} was found` });
+    res.status(404).json({ msg: `no task with id ${taskID} was found` });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -35,17 +35,19 @@ const addTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   try {
-    const { id: userID } = req.params.id;
-    const { name } = req.body;
-    const user = Task.findOneAndUpdate({ _id: userID }, { name });
+    const { id: taskID } = req.params;
 
-    if (user) return res.status(200).json(user);
-    res.status(404).json({ msg: "could not update the user" });
+    const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (task) return res.status(200).json({ task });
+
+    return res.status(404).json({ msg: `No task with id ${taskID}` });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
-
-  res.status(200).send({ msg: "task updated successfully" });
 };
 
 const removeTask = async (req, res) => {
@@ -54,7 +56,7 @@ const removeTask = async (req, res) => {
 
     if (task) return res.status(200).json(task);
 
-    req.status(404).json({ msg: "could not add a new user" });
+    req.status(404).json({ msg: "could not add a new task" });
   } catch (error) {
     req.status(500).json({ msg: error });
   }
